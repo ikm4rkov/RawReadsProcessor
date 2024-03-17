@@ -21,7 +21,9 @@ std::vector<std::string> one_read = { "", "", "", "" };
 std::vector<std::string> first_read = { "", "", "", "" };
 std::vector<std::string> second_read = { "", "", "", "" };
 std::vector<std::string> dna_read = { "", "", "", "" };
+std::vector<std::string> dna_read_clear = { "", "", "", "" };
 std::vector<std::string> rna_read = { "", "", "", "" };
+std::vector<std::string> rna_read_clear = { "", "", "", "" };
 std::vector<std::string> read_nb = { "", "", "", "" };
 std::vector<std::string> empty_vec = {};
 std::vector<std::string> split_id = {};
@@ -637,7 +639,7 @@ int main(int argc, char** argv)
                             print1f_simple(rnafile, rna_read, rnabuffer);
                         }
                         if (TSVu == 1) {
-                            types0 = dna_read[0] +  "\t1\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                            types0 = dna_read[0] +  "\tBT\t1\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
                             brstart = 0;
                             brend = 0;
                             print1f_types(types, types0, typesbuffer);
@@ -672,7 +674,7 @@ int main(int argc, char** argv)
                                 print1f_simple(rnafile, rna_read, rnabuffer);
                             }
                             if (TSVu == 1) {
-                                types0 = dna_read[0] +  "\t2\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                types0 = dna_read[0] +  "\tBT\t2\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
                                 brstart = 0;
                                 brend = 0;
                                 print1f_types(types, types0, typesbuffer);
@@ -692,7 +694,7 @@ int main(int argc, char** argv)
                             split_id.clear();
                             if (sepu == 1) print1f_simple(file_nb, read_nb, nbbuffer);
                             if (TSVu == 1) {
-                                types0 = dna_read[0] +  "\t" + std::to_string(RNA_Length_Success) + std::to_string(success) + std::to_string(DNA_Length_Success) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                types0 = dna_read[0] +  "\tBF\t" + std::to_string(RNA_Length_Success) + std::to_string(success) + std::to_string(DNA_Length_Success) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
                                 brstart = 0;
                                 brend = 0;
                                 print1f_types(types, types0, typesbuffer);
@@ -768,105 +770,201 @@ int main(int argc, char** argv)
                 int success2F = 1;
                 int success2R = 1;
                 for(i = restofline1.length() - 1; i >= 0; i--)
-                restoflineq_rc1 += restoflineq1[i];
+                    restoflineq_rc1 += restoflineq1[i];
                 for(i = restofline2.length() - 1; i >= 0; i--)
-                restoflineq_rc2 += restoflineq2[i];
+                    restoflineq_rc2 += restoflineq2[i];
                 //cout << "preparser" << endl;
                 //cout << success1F << " " << describe_seq << " " << restofline1 << " " << restoflineq1 << " " << match_vector_forward1.size() << endl;
                 parser(success1F, describe_seq,  restofline1, restoflineq1,  match_vector_forward1);
                 match_vector_forward1.clear();
-                if (success1F != 1){
+                if (success1F != 1) {
                     dna_read[1] = "";
                     dna_read[3] = "";
                     rna_read[1] = "";
                     rna_read[3] = "";
                 }
+                else
+                    for(i = 3; i >= 0; i--) {
+                        dna_read_clear[i] = dna_read[i];
+                        rna_read_clear[i] = rna_read[i];
+                    }
                 //cout << "parser1" << endl;
                 //cout << success1R << " " << describe_seq << " " << restofline_rc1 << " " << restoflineq_rc1 << " " << match_vector_reverse1.size() << endl;
                 parser(success1R, describe_seq,  restofline_rc1, restoflineq_rc1,  match_vector_reverse1);
                 match_vector_reverse1.clear();
-                if (success1R != 1){
+                if (success1R != 1) {
                     dna_read[1] = "";
                     dna_read[3] = "";
                     rna_read[1] = "";
                     rna_read[3] = "";
                 }
+                else
+                    for(i = 3; i >= 0; i--) {
+                        dna_read_clear[i] = dna_read[i];
+                        rna_read_clear[i] = rna_read[i];
+                    }
                 //cout << "parser2" << endl;
                 parser(success2F, describe_seq,  restofline2, restoflineq2,  match_vector_forward2);
                 match_vector_forward2.clear();
-                if (success2F != 1){
+                if (success2F != 1) {
                     dna_read[1] = "";
                     dna_read[3] = "";
                     rna_read[1] = "";
                     rna_read[3] = "";
                 }
+                else
+                    for(i = 3; i >= 0; i--) {
+                        dna_read_clear[i] = dna_read[i];
+                        rna_read_clear[i] = rna_read[i];
+                    }
                 //cout << "parser3" << endl;
                 parser(success2R, describe_seq,  restofline_rc2, restoflineq_rc2,  match_vector_reverse2);
                 match_vector_reverse2.clear();
-                if (success2R != 1){
+                if (success2R != 1) {
                     dna_read[1] = "";
                     dna_read[3] = "";
                     rna_read[1] = "";
                     rna_read[3] = "";
                 }
+                else
+                    for(i = 3; i >= 0; i--) {
+                        dna_read_clear[i] = dna_read[i];
+                        rna_read_clear[i] = rna_read[i];
+                    }
                 //cout << "postparser" << endl;
                 //printf("%d, %d, %d, %d\n", success1F , success1R , success2F , success2R);
                 if (success1F + success1R + success2F + success2R == 1) {
-                    RNA_Length_Success = rna_read[1].length() >= min_length_rna;
-                    DNA_Length_Success = dna_read[1].length() >= min_length_dna;
-                    if (success1F == 1 && RNA_Length_Success && DNA_Length_Success) {
-                        if (sepu == 1) {
-                            print1f_simple(dnafile, dna_read, dnabuffer);
-                            print1f_simple(rnafile, rna_read, rnabuffer);
+                    RNA_Length_Success = rna_read_clear[1].length() >= min_length_rna;
+                    DNA_Length_Success = dna_read_clear[1].length() >= min_length_dna;
+                    if (RNA_Length_Success && DNA_Length_Success) {
+                        if (success1F == 1) {
+                            if (sepu == 1) {
+                                print1f_simple(dnafile, dna_read_clear, dnabuffer);
+                                print1f_simple(rnafile, rna_read_clear, rnabuffer);
+                            }
+                            if (TSVu == 1) {
+                                types0 = dna_read[0] +  "\tBT\t1101\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                brstart = 0;
+                                brend = 0;
+                                print1f_types(types, types0, typesbuffer);
+                                types0 = "";
+                            }
                         }
-                        if (TSVu == 1) {
-                            types0 = dna_read[0] +  "\t1101\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
-                            brstart = 0;
-                            brend = 0;
-                            print1f_types(types, types0, typesbuffer);
-                            types0 = "";
+                        if (success1R == 1) {
+                            if (sepu == 1) {
+                                print1f_simple(dnafile, dna_read_clear, dnabuffer);
+                                print1f_simple(rnafile, rna_read_clear, rnabuffer);
+                            }
+                            if (TSVu == 1) {
+                                types0 = dna_read[0] +  "\tBT\t1201\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                brstart = 0;
+                                brend = 0;
+                                print1f_types(types, types0, typesbuffer);
+                                types0 = "";
+                            }
+                        }
+                        if (success2F == 1) {
+                            if (sepu == 1) {
+                                print1f_simple(dnafile, dna_read_clear, dnabuffer);
+                                print1f_simple(rnafile, rna_read_clear, rnabuffer);
+                            }
+                            if (TSVu == 1) {
+                                types0 = dna_read[0] +  "\tBT\t1011\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                brstart = 0;
+                                brend = 0;
+                                print1f_types(types, types0, typesbuffer);
+                                types0 = "";
+                            }
+                        }
+                        // if (success2R == 1)
+                        //      cout << rna_read[1].length() << " " << dna_read[1].length() << endl;
+                        if (success2R == 1) {
+                            //printf("success2R 1");
+                            if (sepu == 1) {
+                                print1f_simple(dnafile, dna_read_clear, dnabuffer);
+                                print1f_simple(rnafile, rna_read_clear, rnabuffer);
+                            }
+                            if (TSVu == 1) {
+                                types0 = dna_read[0] +  "\tBT\t1021\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                brstart = 0;
+                                brend = 0;
+                                print1f_types(types, types0, typesbuffer);
+                                types0 = "";
+                            }
                         }
                     }
-                    if (success1R == 1 && RNA_Length_Success && DNA_Length_Success) {
-                        if (sepu == 1) {
-                            print1f_simple(dnafile, dna_read, dnabuffer);
-                            print1f_simple(rnafile, rna_read, rnabuffer);
+                    else {
+                        if (success1F == 1) {
+                            if (sepu == 1) {
+                                read_nb[0] = split_id[0];
+                                read_nb[1] = read_seq1 + "|" + read_seq2;
+                                read_nb[3] = first_read[3] + "|" + second_read[3];
+                                read_nb[2] = "+";
+                                print1f_simple(file_nb, read_nb, nbbuffer);
+                                split_id.clear();
+                            }
+                            if (TSVu == 1) {
+                                types0 = dna_read[0] +  "\tBT\t" + std::to_string(RNA_Length_Success) + "10" + std::to_string(RNA_Length_Success) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                brstart = 0;
+                                brend = 0;
+                                print1f_types(types, types0, typesbuffer);
+                                types0 = "";
+                            }
                         }
-                        if (TSVu == 1) {
-                            types0 = dna_read[0] +  "\t1201\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
-                            brstart = 0;
-                            brend = 0;
-                            print1f_types(types, types0, typesbuffer);
-                            types0 = "";
+                        if (success1R == 1) {
+                            if (sepu == 1) {
+                                read_nb[0] = split_id[0];
+                                read_nb[1] = read_seq1 + "|" + read_seq2;
+                                read_nb[3] = first_read[3] + "|" + second_read[3];
+                                read_nb[2] = "+";
+                                print1f_simple(file_nb, read_nb, nbbuffer);
+                                split_id.clear();
+                            }
+                            if (TSVu == 1) {
+                                types0 = dna_read[0] +  "\tBT\t" + std::to_string(RNA_Length_Success) + "20" + std::to_string(RNA_Length_Success) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                brstart = 0;
+                                brend = 0;
+                                print1f_types(types, types0, typesbuffer);
+                                types0 = "";
+                            }
                         }
-                    }
-                    if (success2F == 1 && RNA_Length_Success && DNA_Length_Success) {
-                        if (sepu == 1) {
-                            print1f_simple(dnafile, dna_read, dnabuffer);
-                            print1f_simple(rnafile, rna_read, rnabuffer);
+                        if (success2F == 1) {
+                            if (sepu == 1) {
+                                read_nb[0] = split_id[0];
+                                read_nb[1] = read_seq1 + "|" + read_seq2;
+                                read_nb[3] = first_read[3] + "|" + second_read[3];
+                                read_nb[2] = "+";
+                                print1f_simple(file_nb, read_nb, nbbuffer);
+                                split_id.clear();
+
+                            }
+                            if (TSVu == 1) {
+                                types0 = dna_read[0] +  "\tBT\t" + std::to_string(RNA_Length_Success) + "01" + std::to_string(RNA_Length_Success) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                brstart = 0;
+                                brend = 0;
+                                print1f_types(types, types0, typesbuffer);
+                                types0 = "";
+                            }
                         }
-                        if (TSVu == 1) {
-                            types0 = dna_read[0] +  "\t1011\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
-                            brstart = 0;
-                            brend = 0;
-                            print1f_types(types, types0, typesbuffer);
-                            types0 = "";
-                        }
-                    }
-                    // if (success2R == 1)
-                    //  cout << rna_read[1].length() << " " << dna_read[1].length() << endl;
-                    if (success2R == 1 && RNA_Length_Success && DNA_Length_Success) {
-                        //printf("success2R 1");
-                        if (sepu == 1) {
-                            print1f_simple(dnafile, dna_read, dnabuffer);
-                            print1f_simple(rnafile, rna_read, rnabuffer);
-                        }
-                        if (TSVu == 1) {
-                            types0 = dna_read[0] +  "\t1021\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
-                            brstart = 0;
-                            brend = 0;
-                            print1f_types(types, types0, typesbuffer);
-                            types0 = "";
+                        // if (success2R == 1)
+                        //  cout << rna_read[1].length() << " " << dna_read[1].length() << endl;
+                        if (success2R == 1) {
+                            //printf("success2R 1");
+                            if (sepu == 1) {
+                                read_nb[0] = split_id[0];
+                                read_nb[1] = read_seq1 + "|" + read_seq2;
+                                read_nb[3] = first_read[3] + "|" + second_read[3];
+                                read_nb[2] = "+";
+                                print1f_simple(file_nb, read_nb, nbbuffer);
+                                split_id.clear();
+                            }
+                            if (TSVu == 1) {
+                                types0 = dna_read[0] +  "\tBT\t" + std::to_string(RNA_Length_Success) + "02" + std::to_string(RNA_Length_Success) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                brstart = 0;
+                                brend = 0;
+                                print1f_types(types, types0, typesbuffer);
+                                types0 = "";
+                            }
                         }
                     }
                 }
@@ -880,7 +978,7 @@ int main(int argc, char** argv)
                         split_id.clear();
                     }
                     if (TSVu == 1) {
-                        types0 = read_nb[0] +  "\t" +  std::to_string(success1F) +  std::to_string(success1R) + std::to_string(success2F) + std::to_string(success2R) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                        types0 = read_nb[0] +  "\tBF\t" +  std::to_string(success1F) +  std::to_string(success1R) + std::to_string(success2F) + std::to_string(success2R) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
                         brstart = 0;
                         brend = 0;
                         print1f_types(types, types0, typesbuffer);
