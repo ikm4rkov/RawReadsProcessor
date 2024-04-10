@@ -580,8 +580,7 @@ int main(int argc, char** argv)
             {
                 // checking whether read is fully read and if so searching for the bridge pattern
                 // cout << line << endl;
-                if ((line[0] == '@') && (line_cnt_mod != 0) && (one_read[line_cnt_mod - 1] != "+"))
-                {
+                if (line_cnt_mod == 4)  {
                     // progress counter
                     if (progress % 1000000 == 0 && progress != 0)
                         cout << "Processed " << progress / 1000000 << " million reads" << endl;
@@ -729,7 +728,7 @@ int main(int argc, char** argv)
         //cout << infile2.is_open() << endl;
         while(getline(infile1, line1) && getline(infile2, line2)) {
             //cout << "lines1,2 " << line1 << " " << line2 << endl;
-            if ((line1[0] == '@') && (line_cnt_mod != 0) && (first_read[line_cnt_mod - 1] != "+") && (line2[0] == '@') && (second_read[line_cnt_mod - 1] != "+")) {
+            if (line_cnt_mod == 4) {
                 if (progress % 1000000 == 0 && progress != 0) cout << "Processed " << progress / 1000000 << " million reads" << endl;
                 //cout << "PEu reads" << endl;
                 if (first_read[0] != second_read[0]) {
