@@ -1,5 +1,5 @@
 Version 1.0 (CPP) - only single-end file input, old verison (old read forming method, will skip the last read unless you add '\n@'.
-Version 1.1 (CPP) - single-end and paired-end input. The algorithm is non-greedy, that's why EndsProcessor was added. ConvertDesqSeq splits the description sequence into two for EndsProcessor.
+Version 1.1 (CPP) - single-end and paired-end input. The algorithm is non-greedy, it will process the first match. EndsProcessor is position-based, it will process either 5' or 3' specified.
 
 Allows grammar:
   
