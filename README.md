@@ -37,7 +37,7 @@ Options:
   
   -k second input file for paired-end mode (.FASTQ)
   
-  -d description sequence (most symbols are special characters in Bash, so it is better to set this in apostrophes '; follows grammer) e.g. *bTCCTAGCACCATCAATGCGATAGGCAACGCTCCGACT(1).s[CCC|] for Red-C.
+  -d description sequence (most symbols are special characters in Bash, so it is better to set this in apostrophes '; follows grammar) e.g. *bTCCTAGCACCATCAATGCGATAGGCAACGCTCCGACT(1).s[CCC|] for Red-C.
   
   -l min length for DNA part (default 0)
   
