@@ -37,4 +37,6 @@ Unlike the first program has a contants arguments order: DNA.FASTQ RNA.FASTQ DNA
 This program creates _RS files which are results of its grammar operations and in addition will create oligos .TSV file. Oligos file is in format <Oligonucleotide (2-3 length)>\t<Description e.g. DNA_3'_Last2>\t<Count>. It can be processed and visualised to check what do the reads have at their ends and how does it correlate with an experimental design.
 
 ConvertDesqSeq - is a simple sed command to remove unrelated to EndsProcessor operators. Implies your description sequence is in file Input, but you can change in to stdin.
+CutDescSeqForModule1 - is an alternative command which removes unrelated to the main program operators from the description sequence.
+
 
