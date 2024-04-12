@@ -65,10 +65,17 @@ Allows grammar:
   
   ']' closing operator value
 
-Unlike the first program has a contants arguments order: DNA.FASTQ RNA.FASTQ DNA_desq_seq RNA_desc_seq.
+Unlike the first program has a constant arguments order: DNA.FASTQ RNA.FASTQ DNA_desq_seq RNA_desc_seq.
 This program creates _RS files which are results of its grammar operations and in addition will create oligos .TSV file. Oligos file is in format <Oligonucleotide (2-3 length)>\t<Description e.g. DNA_3'_Last2>\t<Count>. It can be processed and visualised to check what do the reads have at their ends and how does it correlate with an experimental design.
 
 ConvertDesqSeq - is a simple sed command to remove unrelated to EndsProcessor operators. Implies your description sequence is in file Input, but you can change in to stdin.
 CutDescSeqForModule1 - is an alternative command which removes unrelated to the main program operators from the description sequence.
 
+The next three scripts are simplified launcher, they require V1.1 and EndsProcessor to be compilated into alpha1 and alpha2 in that order (predefined parameters are all output and min length 14 nucleotides both parts).
+
+batch_s.sh - is a simplified config launch script, if there is a single-paired data and a written into file description sequence, launch this to compute all in one go. Syntax is batch_s.sh Desc_seq_file Input.FASTQ.
+
+batch_p.sh - is a simplified config launch script, if there is a paired-paired data and a written into file description sequence, launch this to compute all in one go. Syntax is batch_s.sh Desc_seq_file Input1.FASTQ Input2.FASTQ.
+
+batch_d.sh - is a simplified config launch script, if there is an already divided by bridge data and a written into file description sequence, launch this to compute all in one go. Syntax is batch_s.sh Desc_seq_file DNA.FASTQ RNA.FASTQ.
 
