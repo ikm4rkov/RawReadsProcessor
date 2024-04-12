@@ -79,3 +79,14 @@ batch_p.sh - is a simplified config launch script, if there is a paired-paired d
 
 batch_d.sh - is a simplified config launch script, if there is an already divided by bridge data and a written into file description sequence, launch this to compute all in one go. Syntax is batch_s.sh Desc_seq_file DNA.FASTQ RNA.FASTQ.
 
+Next files are for testing out.
+
+Desc_seq_test - is a test description sequence.
+
+test1 - is a test R1.
+
+test2 - is a test R2.
+
+test1_DNA - is a test DNA-part of test1.
+
+test1_RNA - is a test RNA-part of test1.
