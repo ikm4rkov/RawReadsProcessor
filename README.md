@@ -73,7 +73,7 @@ Oligos file is in format <Oligonucleotide (2-3 length)>\t<Description e.g. DNA_3
 ConvertDesqSeq - is a simple sed command to remove unrelated to EndsProcessor operators. Implies your description sequence is in file Input, but you can change in to stdin.
 CutDescSeqForModule1 - is an alternative command which removes unrelated to the main program operators from the description sequence.
 
-The next three scripts are simplified launcher, they require V1.1 and EndsProcessor to be compilated into alpha1 and alpha2 in that order (predefined parameters are all output and min length 14 nucleotides both parts).
+The next three scripts are simplified launcher, they require V1.1 and EndsProcessor to be compilated into alpha1 and alpha2 respectively (predefined parameters are all output and min length 14 nucleotides both parts).
 
 batch_s.sh - is a simplified config launch script, if there is a single-paired data and a written into file description sequence, launch this to compute all in one go. Syntax is batch_s.sh Desc_seq_file Input.FASTQ.
 
