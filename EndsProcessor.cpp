@@ -396,4 +396,5 @@ int main(int argc, char *argv[]) {
     count_dictd3f.clear();
     count_dictr3r.clear();
     count_dictr3f.clear();
-  
+                return 0;
+}
