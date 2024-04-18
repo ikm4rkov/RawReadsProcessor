@@ -44,47 +44,55 @@ void print1f_simple(int filei, std::vector<string> read, std::string &wbuffer) {
 
 void substitude_rear(vector<string> &read, string check, string sub, int &success){
   //cout << read[1] << " " << read[3] << " " << check << " " << sub << endl;
-        string modread = read[1].substr(read[1].length() - check.length(), check.length() );
-        //cout << "modread: " << modread << "; check: " << check << endl;
-        if (modread  == check) {
-    read[1] = read[1].substr(0, read[1].length() - check.length() );
-                //cout << read[1] << endl;
-                if (sub.length() >= check.length())  {
-            //cout << read[1] << endl;
-                  //cout << read[3].length() - sub.length() + check.length() << " " << sub.length() - check.length() << endl;
-      read[3] += read[3].substr(read[3].length() - sub.length() + check.length(), sub.length() - check.length());
-                }
-                else
-                  read[3] = read[3].substr(0, read[3].length() + sub.length() - check.length());
-                read[1] += sub;
+        if (read[1].length() < check.length()) success = 0;
+        else{
+          string modread = read[1].substr(read[1].length() - check.length(), check.length() );
+          //cout << "modread: " << modread << "; check: " << check << endl;
+          if (modread  == check) {
+      read[1] = read[1].substr(0, read[1].length() - check.length());
+                  //cout << read[1] << endl;
+                  if (sub.length() >= check.length())  {
+              //cout << read[1] << endl;
+                    //cout << read[3].length() - sub.length() + check.length() << " " << sub.length() - check.length() << endl;
+        read[3] += read[3].substr(read[3].length() - sub.length() + check.length(), sub.length() - check.length());
+                  }
+                  else
+                    read[3] = read[3].substr(0, read[3].length() + sub.length() - check.length());
+                  read[1] += sub;
+          }
+          else success = 0;
         }
-        else success = 0;
 }
 
 void substitude_front(vector<string> &read, string check, string sub, int &success){
-  if (read[1].substr(0, check.length()) == check) {
-    read[1] = read[1].substr(check.length(), read[1].length());
-                if (sub.length() >= check.length()) {
-                  string aux;
-                  aux = read[3].substr(0, sub.length() - check.length());
-                        read[3] = aux + read[3];
+  if (read[1].length() < check.length()) success = 0;
+        else{
+          if (read[1].substr(0, check.length()) == check) {
+      read[1] = read[1].substr(check.length(), read[1].length());
+                  if (sub.length() >= check.length()) {
+                    string aux;
+                    aux = read[3].substr(0, sub.length() - check.length());
+                          read[3] = aux + read[3];
                 }
                 else
-                  read[3] = read[3].substr(check.length() - sub.length(), read[3].length());
+                    read[3] = read[3].substr(check.length() - sub.length(), read[3].length());
                 read[1] = sub + read[1];
+          }
+          else success = 0;
         }
-        else success = 0;
 }
 
 void add_rear(vector<string> &read, string addition) {
   read[1] += addition;
-        read[3] += read[3].substr(read[3].length() - addition.length(), addition.length());
+        if (read[3].length() >= addition.length()) read[3] += read[3].substr(read[3].length() - addition.length(), addition.length());
+        else read[3] += read[3];
 }
 
 void add_front(vector<string> &read, string addition) {
   read[1] = addition + read[1];
         string aux;
-        aux = read[3].substr(0, addition.length());
+        if (read[3].length() >= addition.length()) aux = read[3].substr(0, addition.length());
+        else aux = read[3];
         read[3] = aux + read[3];
 }
 
@@ -292,6 +300,7 @@ int main(int argc, char *argv[]) {
                                 //cout << line_cnt_mod << endl;
                                 first_read[line_cnt_mod] = line1;
         second_read[line_cnt_mod] = line2;
+                                //cout << line2 << endl;
                                 if (line_cnt_mod == 3) {
                                                 split( first_read[0], split_id, ' ' );
                                                 first_read[0] = split_id[0];
@@ -306,6 +315,7 @@ int main(int argc, char *argv[]) {
                     exit(1);
             }*/
                                                 //cout << "before counting iteration" << endl;
+                                                //cout << first_read[0] << endl;
                                                 count_dictd2f[first_read[1].substr(0, 2)] += 1;
                                                 count_dictd2r[first_read[1].substr(first_read[1].length() - 2, 2)] += 1;
                                                 count_dictr2f[second_read[1].substr(0, 2)] += 1;
@@ -344,7 +354,7 @@ int main(int argc, char *argv[]) {
                                                 }
                                                 first_read = { "", "", "", "" };
                                                 second_read = { "", "", "", "" };
-                                                line_cnt_mod = 0;
+                                                line_cnt_mod = -1;
                                 }
                                 line_cnt_mod += 1;
                 }
