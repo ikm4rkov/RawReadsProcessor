@@ -712,7 +712,7 @@ int main(int argc, char** argv)
                                                         one_read[i] = "";
                                                 }*/
                     one_read = { "", "", "", "" };
-                    line_cnt_mod = 0;
+                    line_cnt_mod = -1;
                 }
                 line_cnt_mod += 1;
 
@@ -991,7 +991,7 @@ int main(int argc, char** argv)
                 }
                 first_read = { "", "", "", "" };
                 second_read = { "", "", "", "" };
-                line_cnt_mod = 0;
+                line_cnt_mod = -1;
 
             }
             line_cnt_mod += 1;
