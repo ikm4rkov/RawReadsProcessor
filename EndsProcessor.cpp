@@ -16,6 +16,7 @@ vector<string> second_read = { "", "", "", "" };
 vector<string> rna_read = { "", "", "", "" };
 vector<string> dna_read = { "", "", "", "" };
 std::vector<std::string> split_id = {};
+std::vector<std::string> descs_split = {};
 std::vector<std::string> empty_vec = {};
 int i,j,k;
 string dnabuffer = "";
@@ -132,7 +133,7 @@ size_t split(const std::string &txt, std::vector<std::string> &strs, char ch)  {
     // Add the last one
     strs.push_back( txt.substr( initialPos, std::min( pos, txt.size() ) - initialPos + 1 ) );
 
-    return strs.size();
+   return strs.size();
 }
 
 // parser for a description sequence, changes the value of success
@@ -271,9 +272,13 @@ int main(int argc, char *argv[]) {
     //cout<<"The size of Map is :"<< count_dict.size();
                 string inputfilepath1 = argv[1];
                 string inputfilepath2 = argv[2];
-                string desc_seq_dna = argv[3];
-                string desc_seq_rna = argv[4];
-                cout << "End sequence processor has started" << endl;
+                string desc_seqs = argv[3];
+                string desc_seq_dna;
+                string desc_seq_rna;
+                split(desc_seqs, descs_split, ' ');
+                desc_seq_dna = descs_split[0];
+                desc_seq_rna = descs_split[1];
+                cout << desc_seq_dna << " <-Description sequence DNA, description sequence RNA-> " << desc_seq_rna <<  endl;
                 //cout << "desc_seq DNA = " << desc_seq_dna <<  "desc_seq RNA = " << desc_seq_rna << endl;
                 string s1 = inputfilepath1;
                 s1.append("_RS");
@@ -348,6 +353,7 @@ int main(int argc, char *argv[]) {
                                                 //cout << "before dna parser" << endl;
                                                 parser(desc_seq_dna, true);
                                                 parser(desc_seq_rna, false);
+                                                //cout << success << " " << first_read[0] << endl;
                                                 if (success)  {
                                                   print1f_simple(dnafile, first_read, dnabuffer);
                                                   print1f_simple(rnafile, second_read, rnabuffer);
