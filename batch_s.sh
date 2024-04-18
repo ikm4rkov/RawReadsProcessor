@@ -3,6 +3,6 @@ cat "$1"
 d1=$(cat "$1"  |  sed 's/[+?\-s][^\)]*\]//g')
 echo ./alpha1 -s -e -t -i $2 -d $d1 -l 14 -m 14
 ./alpha1 -s -e -t -i $2 -d $d1 -l 14 -m 14
-d2=$(cat "$1"  |  sed 's/[?!<][^\)]*)//g; s/b[^\)]*)/\n/g')
-echo ./alpha2 "$2"_DNA "$2"_RNA $d2
-./alpha2 "$2"_DNA "$2"_RNA $d2
+d2=$(cat "$1"  |  sed 's/[?!<][^\)]*)//g; s/b[^\)]*)/ /g')
+echo ./alpha2 "$2"_DNA "$2"_RNA "$d2"
+./alpha2 "$2"_DNA "$2"_RNA "$d2"
