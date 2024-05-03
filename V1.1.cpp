@@ -642,7 +642,7 @@ int main(int argc, char** argv)
                             print1f_simple(rnafile, rna_read, rnabuffer);
                         }
                         if (TSVu == 1) {
-                            types0 = dna_read[0] +  "\tBT\t1\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                            types0 = dna_read[0] +  "\tBT\t111\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
                             brstart = 0;
                             brend = 0;
                             print1f_types(types, types0, typesbuffer);
@@ -677,7 +677,7 @@ int main(int argc, char** argv)
                                 print1f_simple(rnafile, rna_read, rnabuffer);
                             }
                             if (TSVu == 1) {
-                                types0 = dna_read[0] +  "\tBT\t2\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                types0 = dna_read[0] +  "\tBT\t121\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
                                 brstart = 0;
                                 brend = 0;
                                 print1f_types(types, types0, typesbuffer);
