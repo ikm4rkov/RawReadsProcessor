@@ -27,6 +27,9 @@ std::vector<std::string> rna_read_clear = { "", "", "", "" };
 std::vector<std::string> read_nb = { "", "", "", "" };
 std::vector<std::string> empty_vec = {};
 std::vector<std::string> split_id = {};
+std::vector<std::string> name_split = {};
+std::vector<std::string> cond_codes = {};
+std::set<string> condi_codes;
 
 // that way with a buffer was unsuccessful
 /*int buffersize = 10*1024*1024;
@@ -427,11 +430,12 @@ int main(int argc, char** argv)
     string inputfilepath1 = "";
     string inputfilepath2 = "";
     string describe_seq = "";
+                string bridge_codes = "10,01,20,02";
     int index;
     int c;
     string types0 = "";
     opterr = 0;
-    while ((c = getopt (argc, argv, "hsepti:k:j:d:l:m:")) != -1)
+    while ((c = getopt (argc, argv, "hseptu:i:k:j:d:l:m:")) != -1)
         switch (c) {
         case 'h':
             cout << "Tool fot processing reads in .FASTQ fomat" << endl;
@@ -441,6 +445,7 @@ int main(int argc, char** argv)
             cout << "-s single end reads mode, the ouput will be in 3 .FASTQ files - DNA- parts, RNA- parts and NB (no bridge) reads. !can be run with -p, combines both outputs" << endl;
             cout << "-p paired end mode, the output will be in .tsv file: read_id\t0|1|2(1 for forward bridge, 2 for reverse, 0 for no bridge)\tstart_position\tend_position. !can be run with -s, combines both outputs" << endl;
             cout << "-t .TSV statistic format" << endl;
+                                                cout << "-u conditional codes for bridge strand; comma separated without whitespaces; default is 10,01,20,02 meaning one bridge of any strand, 10 would mean only main strand file 1. When SE mode 10=1 mode, 20=2 mode.";
             cout << "-d description sequence, must be silenced: * - start of DNA- part, . - start of RNA- part, < - start for cut part, ! - start for checked DNA- part. ? - start for checked RNA- part, ([0-9]+) - max mismatch limit, b - is the start for bridge (-p mode only). Example *<AGTC(1). will find a bridge AGTC and separate DNA- and RNA- parts." << endl;
             cout << "-l optional min length filter for a total DNA- and RNA- parts, default is 0." << endl;
             break;
@@ -456,6 +461,8 @@ int main(int argc, char** argv)
         case 't':
             TSVu = 1;
             break;
+                                case 'u':
+            bridge_codes = optarg;
         case 'i':
             inputfilepath = optarg;
             break;
@@ -511,28 +518,37 @@ int main(int argc, char** argv)
     //cout << inputfilepath << endl;
     string s1 = "", s2 = "", s3 = "", s4 = "";
     // reading file and opening 4 output files
+                split(bridge_codes, cond_codes, ',');
     if (SEu == 1) {
         //cout << "opening" << endl;
         s1 = inputfilepath;
-        s1.append("_DNA");
-        s2 = inputfilepath;
-        s2.append("_RNA");
-        s3 = inputfilepath;
-        s3.append("_garbage");
-        s4 = inputfilepath;
-        s4.append("_types.tsv");
+                                split(s1, name_split, '.');
+        s1 = name_split[0] + ".DNA.fastq";
+        s2 = name_split[0] + ".RNA.fastq";
+        s3 = name_split[0] + ".garbage.fastq";
+        s4 = name_split[0] + ".types.tsv";
     }
     if (PEu == 1) {
-        s1 = inputfilepath1;
-        s1.append("_DNA");
-        s2 = inputfilepath1;
-        s2.append("_RNA");
-        s3 = inputfilepath1;
-        s3.append("_garbage");
-        s4 = inputfilepath1;
-        s4.append("_types.tsv");
-    }
-    fstream infile;
+                                s1 = inputfilepath1;
+        split(s1, name_split, '.');
+        s1 = name_split[0] + ".DNA.fastq";
+        s2 = name_split[0] + ".RNA.fastq";
+        s3 = name_split[0] + ".garbage.fastq";
+        s4 = name_split[0] + ".types.tsv";
+                }
+                for(i=0;i<cond_codes.size();i++){
+                                if (SEu == 1){
+                                                if (cond_codes[i] == "10") condi_codes.insert("1");
+                                                if (cond_codes[i] == "20") condi_codes.insert("2");
+                                }
+                                else
+                                  if (PEu == 1) condi_codes.insert(cond_codes[i]);
+                }
+    /*for(auto it = condi_codes.begin(); it != condi_codes.end(); it++)
+    {
+        cout << *it << endl;
+    }*/
+                fstream infile;
     fstream infile1;
     fstream infile2;
     infile.open(inputfilepath, std::ifstream::in);
@@ -637,7 +653,8 @@ int main(int argc, char** argv)
                         // cout << "seq " << rna_read[1] << endl;
                                                                                                  //cout << "sepu " << sepu << " TSVu " << TSVu << endl;
                         // writing depending on mode
-                        if (sepu == 1) {
+                                                                                                int is_in = condi_codes.count("1");
+                        if (sepu == 1 && is_in) {
                             print1f_simple(dnafile, dna_read, dnabuffer);
                             print1f_simple(rnafile, rna_read, rnabuffer);
                         }
@@ -672,7 +689,8 @@ int main(int argc, char** argv)
                         DNA_Length_Success = dna_read[1].length() >= min_length_dna;
                         if (success == 1 && DNA_Length_Success && RNA_Length_Success) {
                             // cout << "f2" << endl;
-                            if (sepu == 1) {
+                                                                                                                int  is_in = condi_codes.count("2");
+                            if (sepu == 1 && is_in) {
                                 print1f_simple(dnafile, dna_read, dnabuffer);
                                 print1f_simple(rnafile, rna_read, rnabuffer);
                             }
@@ -733,6 +751,7 @@ int main(int argc, char** argv)
             //cout << "lines1,2 " << line1 << " " << line2 << endl;
                                                 first_read[line_cnt_mod] = line1;
             second_read[line_cnt_mod] = line2;
+                                                //cout << line_cnt_mod << endl;
             if (line_cnt_mod == 3) {
                 if (progress % 1000000 == 0 && progress != 0) cout << "Processed " << progress / 1000000 << " million reads" << endl;
                 //cout << "PEu reads" << endl;
@@ -842,7 +861,8 @@ int main(int argc, char** argv)
                     DNA_Length_Success = dna_read_clear[1].length() >= min_length_dna;
                     if (RNA_Length_Success && DNA_Length_Success) {
                         if (success1F == 1) {
-                            if (sepu == 1) {
+                                                                                                                int is_in = condi_codes.count("1101");
+                            if (sepu == 1 && is_in) {
                                 print1f_simple(dnafile, dna_read_clear, dnabuffer);
                                 print1f_simple(rnafile, rna_read_clear, rnabuffer);
                             }
@@ -855,7 +875,8 @@ int main(int argc, char** argv)
                             }
                         }
                         if (success1R == 1) {
-                            if (sepu == 1) {
+                                                                                                                int is_in = condi_codes.count("1201");
+                            if (sepu == 1 && is_in) {
                                 print1f_simple(dnafile, dna_read_clear, dnabuffer);
                                 print1f_simple(rnafile, rna_read_clear, rnabuffer);
                             }
@@ -868,7 +889,8 @@ int main(int argc, char** argv)
                             }
                         }
                         if (success2F == 1) {
-                            if (sepu == 1) {
+                                                                                                                int is_in = condi_codes.count("1011");
+                            if (sepu == 1 && is_in) {
                                 print1f_simple(dnafile, dna_read_clear, dnabuffer);
                                 print1f_simple(rnafile, rna_read_clear, rnabuffer);
                             }
@@ -883,8 +905,9 @@ int main(int argc, char** argv)
                         // if (success2R == 1)
                         //      cout << rna_read[1].length() << " " << dna_read[1].length() << endl;
                         if (success2R == 1) {
+                                                                                                                int is_in = condi_codes.count("1021");
                             //printf("success2R 1");
-                            if (sepu == 1) {
+                            if (sepu == 1 && is_in) {
                                 print1f_simple(dnafile, dna_read_clear, dnabuffer);
                                 print1f_simple(rnafile, rna_read_clear, rnabuffer);
                             }
