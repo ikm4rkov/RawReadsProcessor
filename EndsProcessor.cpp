@@ -18,6 +18,7 @@ vector<string> dna_read = { "", "", "", "" };
 std::vector<std::string> split_id = {};
 std::vector<std::string> descs_split = {};
 std::vector<std::string> empty_vec = {};
+std::vector<std::string> name_split = {};
 int i,j,k;
 string dnabuffer = "";
 string rnabuffer = "";
@@ -276,13 +277,40 @@ int main(int argc, char *argv[]) {
                 string desc_seq_dna;
                 string desc_seq_rna;
                 split(desc_seqs, descs_split, ' ');
-                desc_seq_dna = descs_split[0];
-                desc_seq_rna = descs_split[1];
+                for(i=0; i<2; i++)
+                  for(j=0; j<descs_split[i].length(); j++){
+                          //cout << descs_split[i] << endl;
+                          if (descs_split[i][j] == '*'){
+                                  desc_seq_dna = descs_split[i];
+                                        break;
+                                }
+                          if (descs_split[i][j] == '.'){
+          desc_seq_rna = descs_split[i];
+          break;
+        }
+                  }
+
+                //desc_seq_dna = descs_split[0];
+                //desc_seq_rna = descs_split[1];
                 cout << desc_seq_dna << " <-Description sequence DNA, description sequence RNA-> " << desc_seq_rna <<  endl;
                 //cout << "desc_seq DNA = " << desc_seq_dna <<  "desc_seq RNA = " << desc_seq_rna << endl;
                 string s1 = inputfilepath1;
+                /*const string aux1 = s1;
+                cout << s1 << " " << name_split.size() << endl;
+                split(aux1, name_split, '.');
+                s1 = name_split[0];
+                name_split[name_split.size()] = "RS." + name_split[name_split.size()];
+                cout << name_split.size() << endl;
+                for(i=1; i<name_split.size(); i++)
+                  s1 = s1 + "." + name_split[i];*/
                 s1.append("_RS");
                 string s2 = inputfilepath2;
+                /*split(s2, name_split, '.');
+    s2 = name_split[0];
+                cout << name_split.size() << endl;
+    name_split[name_split.size()] = "RS." + name_split[name_split.size()];
+    for(i=1; i<name_split.size(); i++)
+      s2 = s2 + "." + name_split[i];*/
                 s2.append("_RS");
                 string s3 = inputfilepath1;
                 s3.append("_last_oligos.tsv");
