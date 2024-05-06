@@ -861,7 +861,7 @@ int main(int argc, char** argv)
                     DNA_Length_Success = dna_read_clear[1].length() >= min_length_dna;
                     if (RNA_Length_Success && DNA_Length_Success) {
                         if (success1F == 1) {
-                                                                                                                int is_in = condi_codes.count("1101");
+                                                                                                                int is_in = condi_codes.count("10");
                             if (sepu == 1 && is_in) {
                                 print1f_simple(dnafile, dna_read_clear, dnabuffer);
                                 print1f_simple(rnafile, rna_read_clear, rnabuffer);
@@ -875,7 +875,7 @@ int main(int argc, char** argv)
                             }
                         }
                         if (success1R == 1) {
-                                                                                                                int is_in = condi_codes.count("1201");
+                                                                                                                int is_in = condi_codes.count("20");
                             if (sepu == 1 && is_in) {
                                 print1f_simple(dnafile, dna_read_clear, dnabuffer);
                                 print1f_simple(rnafile, rna_read_clear, rnabuffer);
@@ -889,7 +889,7 @@ int main(int argc, char** argv)
                             }
                         }
                         if (success2F == 1) {
-                                                                                                                int is_in = condi_codes.count("1011");
+                                                                                                                int is_in = condi_codes.count("01");
                             if (sepu == 1 && is_in) {
                                 print1f_simple(dnafile, dna_read_clear, dnabuffer);
                                 print1f_simple(rnafile, rna_read_clear, rnabuffer);
@@ -905,7 +905,7 @@ int main(int argc, char** argv)
                         // if (success2R == 1)
                         //      cout << rna_read[1].length() << " " << dna_read[1].length() << endl;
                         if (success2R == 1) {
-                                                                                                                int is_in = condi_codes.count("1021");
+                                                                                                                int is_in = condi_codes.count("02");
                             //printf("success2R 1");
                             if (sepu == 1 && is_in) {
                                 print1f_simple(dnafile, dna_read_clear, dnabuffer);
