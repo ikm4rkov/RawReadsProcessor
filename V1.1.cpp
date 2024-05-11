@@ -756,6 +756,7 @@ int main(int argc, char** argv)
                 if (progress % 1000000 == 0 && progress != 0) cout << "Processed " << progress / 1000000 << " million reads" << endl;
                 //cout << "PEu reads" << endl;
                 if (first_read[0] != second_read[0]) {
+                    cout << first_read[0] << " " << second_read[0] << endl;
                     cerr << "input files are not sorted, different read IDs in the lines" << endl;
                     exit(1);
                 }
