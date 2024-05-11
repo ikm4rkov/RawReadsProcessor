@@ -757,8 +757,10 @@ int main(int argc, char** argv)
                 //cout << "PEu reads" << endl;
                 split( first_read[0], split_id, ' ' );
                 first_read[0] = split_id[0];
+                split_id.clear();
                 split( second_read[0], split_id, ' ' );
                 second_read[0] = split_id[0];
+                split_id.clear();
                 if (first_read[0] != second_read[0]) {
                     cerr << first_read[0] << " " << second_read[0] << endl;
                     cerr << "input files are not sorted, different read IDs in the lines" << endl;
