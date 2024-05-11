@@ -755,8 +755,12 @@ int main(int argc, char** argv)
             if (line_cnt_mod == 3) {
                 if (progress % 1000000 == 0 && progress != 0) cout << "Processed " << progress / 1000000 << " million reads" << endl;
                 //cout << "PEu reads" << endl;
+                split( first_read[0], split_id, ' ' );
+                first_read[0] = split_id[0];
+                split( second_read[0], split_id, ' ' );
+                second_read[0] = split_id[0];
                 if (first_read[0] != second_read[0]) {
-                    cout << first_read[0] << " " << second_read[0] << endl;
+                    cerr << first_read[0] << " " << second_read[0] << endl;
                     cerr << "input files are not sorted, different read IDs in the lines" << endl;
                     exit(1);
                 }
