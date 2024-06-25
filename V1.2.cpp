@@ -449,6 +449,7 @@ int main(int argc, char** argv)
                                                 cout << "-u conditional codes for bridge strand; comma separated without whitespaces; default is 10,01,20,02 meaning one bridge of any strand, 10 would mean only main strand file 1. When SE mode 10=1 mode, 20=2 mode.";
             cout << "-d description sequence, must be silenced: * - start of DNA- part, . - start of RNA- part, < - start for cut part, ! - start for checked DNA- part. ? - start for checked RNA- part, ([0-9]+) - max mismatch limit, b - is the start for bridge (-p mode only). Example *<AGTC(1). will find a bridge AGTC and separate DNA- and RNA- parts." << endl;
             cout << "-l optional min length filter for a total DNA- and RNA- parts, default is 0." << endl;
+                                                cout << "-u bridge codes for linker orientation; default 10,01,20,02 10 for paired end mode, 1,2 for single end; example forward linker in R1, 02 reverse complement linker in R2, for single end 1 - forward linker, 2 - reverse complement" << endl;
             break;
         case 's':
             SEu = 1;
@@ -547,6 +548,7 @@ int main(int argc, char** argv)
                                 else
                                   if (PEu == 1) condi_codes.insert(cond_codes[i]);
                 }
+
     /*for(auto it = condi_codes.begin(); it != condi_codes.end(); it++)
     {
         cout << *it << endl;
@@ -655,10 +657,11 @@ int main(int argc, char** argv)
                     if (success == 1 && DNA_Length_Success && RNA_Length_Success) {
                         //      cout << "f1" << line << endl;
                         // cout << "seq " << rna_read[1] << endl;
-                                                                                                 //cout << "sepu " << sepu << " TSVu " << TSVu << endl;
-                        // writing depending on mode
+                                                                                                // cout << "sepu " << sepu << " TSVu " << TSVu << endl;
+                        //cout << dna_read[0] << " 1" << endl;
+                                                                                                // writing depending on mode
                                                                                                 int is_in = condi_codes.count("1");
-                        if (sepu == 1 && is_in) {
+                        if (sepu == 1 && is_in > 0) {
                             print1f_simple(dnafile, dna_read, dnabuffer);
                             print1f_simple(rnafile, rna_read, rnabuffer);
                         }
@@ -694,6 +697,7 @@ int main(int argc, char** argv)
                         DNA_Length_Success = dna_read[1].length() >= min_length_dna;
                         if (success == 1 && DNA_Length_Success && RNA_Length_Success) {
                             // cout << "f2" << endl;
+                                                                                                                // cout << dna_read[0] << " 2" << endl;
                                                                                                                 int  is_in = condi_codes.count("2");
                             if (sepu == 1 && is_in) {
                                 print1f_simple(dnafile, dna_read, dnabuffer);
@@ -719,6 +723,7 @@ int main(int argc, char** argv)
                             read_nb[3] = one_read[3];
                             read_nb[2] = "+";
                             split_id.clear();
+                            // cout << read_nb[0] << " 0" << endl;
                             if (sepu == 1) print1f_simple(file_nb, read_nb, nbbuffer);
                             if (TSVu == 1) {
                                 types0 = dna_read[0] +  "\tBF\t" + std::to_string(RNA_Length_Success) + std::to_string(success) + std::to_string(DNA_Length_Success) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
