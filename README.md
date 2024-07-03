@@ -1,6 +1,10 @@
+Raw reads processor for RNA-DNA interaction sequencing data obtained by "All-to-all" methods. The package allows to find, remove and substitude subsequences in .FASTQ files, the search is approximate for the main programm and exact for ends processor. Supports both single-end and paired-end data. Version changelog and usage can be found below:
+
 Version 1.0 (V1.0.cpp) - only single-end file input, old verison (old read forming method, will skip the last read unless you add '\n@'.
 
 Version 1.1 (V1.1.cpp) - single-end and paired-end input. The algorithm is non-greedy, it will process the first match. EndsProcessor is position-based, it will process either 5' or 3' specified.
+
+Version 1.2 (v1.2.cpp) - added -u option for methods such as Red-C which require specific linker orientation.
 
 Allows grammar:
   
@@ -43,6 +47,8 @@ Options:
   -l min length for DNA part (default 0)
   
   -k min length for RNA part (default 0)
+
+  -u filter for linker sequence orientation (forward or reverse complement; default 10,01,20,02 and is automatically converted to 1,2 for single-end data 1 stands for forward, 2 for reverse complement, first digit for R1, second - for R2)
 
 !Ifboth -s and -p are abscent, program couldn't write (no rights) or reads in R1 and R2 are not sorted (ID from R1 doesn't correspond to ID from R2 at the same string) the program will exit and write the reason.
 
