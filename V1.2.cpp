@@ -66,8 +66,15 @@ void bitap_approximate_search(string pattern, string text, int mismatch_limit, s
     for (i=0; i <= 255; ++i)
         pattern_mask[i] = ~0;
     /* Building patterns */
-    for (i=0; i < mask_length; ++i)
+    for (i=0; i < mask_length; ++i) {
+        if (pattern_mask[i] == 'N') {
+            pattern_mask['A']  &= ~(1UL << i);
+            pattern_mask['G']  &= ~(1UL << i);
+            pattern_mask['C']  &= ~(1UL << i);
+            pattern_mask['T']  &= ~(1UL << i);
+        }
         pattern_mask[pattern[i]] &= ~(1UL << i);
+    }
     unsigned long old_buffer;
     for (i=0; text[i] != '\0'; ++i) {
         old_buffer = buffer[0];
