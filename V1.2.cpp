@@ -547,13 +547,30 @@ int main(int argc, char** argv)
         s4 = name_split[0] + ".types.tsv";
                                 s5 = name_split[0] + ".codes.tsv";
                 }
+                                // FR nomenclature branch
+                                for(i=0;i<cond_codes.size();i++){
+                                                if (SEu == 1){
+                                                                if (cond_codes[i] == "F") condi_codes.insert("1");
+                                                                if (cond_codes[i] == "R") condi_codes.insert("2");
+                                                                }
+                                                else
+                                                                if (PEu == 1){
+                                                                                if (cond_codes[i] == "F0") condi_codes.insert("10");
+                                                                                if (cond_codes[i] == "R0") condi_codes.insert("20");
+                                                                                if (cond_codes[i] == "0F") condi_codes.insert("01");
+                                                                                if (cond_codes[i] == "0R") condi_codes.insert("02");
+                                                                }
+                                }
+                                // 10 nomenclature branch and default
                 for(i=0;i<cond_codes.size();i++){
                                 if (SEu == 1){
                                                 if (cond_codes[i] == "10") condi_codes.insert("1");
                                                 if (cond_codes[i] == "20") condi_codes.insert("2");
+                                                                                                                                                                                                if (cond_codes[i] == "1") condi_codes.insert("1");
+                                                                                                                                                                                                if (cond_codes[i] == "2") condi_codes.insert("2");
                                 }
                                 else
-                                  if (PEu == 1) condi_codes.insert(cond_codes[i]);
+                                  if (PEu == 1 &&  cond_codes[i] == "10" &&  cond_codes[i] == "20" &&  cond_codes[i] == "01" &&  cond_codes[i] == "02" ) condi_codes.insert(cond_codes[i]);
                 }
 
     /*for(auto it = condi_codes.begin(); it != condi_codes.end(); it++)
