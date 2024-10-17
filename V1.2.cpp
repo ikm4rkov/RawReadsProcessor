@@ -67,11 +67,55 @@ void bitap_approximate_search(string pattern, string text, int mismatch_limit, s
         pattern_mask[i] = ~0;
     /* Building patterns */
     for (i=0; i < mask_length; ++i) {
-        if (pattern_mask[i] == 'N') {
+        if (pattern[i] == 'N') {
             pattern_mask['A']  &= ~(1UL << i);
             pattern_mask['G']  &= ~(1UL << i);
             pattern_mask['C']  &= ~(1UL << i);
             pattern_mask['T']  &= ~(1UL << i);
+        }
+                                if (pattern[i] == 'W'){
+                                                pattern_mask['A']  &= ~(1UL << i);
+                                                pattern_mask['T']  &= ~(1UL << i);
+                                }
+                                if (pattern[i] == 'S'){
+            pattern_mask['C']  &= ~(1UL << i);
+            pattern_mask['G']  &= ~(1UL << i);
+        }
+                                if (pattern[i] == 'M'){
+            pattern_mask['A']  &= ~(1UL << i);
+            pattern_mask['C']  &= ~(1UL << i);
+        }
+                                if (pattern[i] == 'K'){
+            pattern_mask['G']  &= ~(1UL << i);
+            pattern_mask['T']  &= ~(1UL << i);
+        }
+                                if (pattern[i] == 'R'){
+            pattern_mask['A']  &= ~(1UL << i);
+            pattern_mask['G']  &= ~(1UL << i);
+        }
+                                if (pattern[i] == 'Y'){
+            pattern_mask['C']  &= ~(1UL << i);
+            pattern_mask['T']  &= ~(1UL << i);
+        }
+                                if (pattern[i] == 'B'){
+            pattern_mask['G']  &= ~(1UL << i);
+            pattern_mask['C']  &= ~(1UL << i);
+                                                pattern_mask['T']  &= ~(1UL << i);
+        }
+                                if (pattern[i] == 'D'){
+            pattern_mask['A']  &= ~(1UL << i);
+            pattern_mask['G']  &= ~(1UL << i);
+            pattern_mask['T']  &= ~(1UL << i);
+        }
+                                if (pattern[i] == 'H'){
+            pattern_mask['A']  &= ~(1UL << i);
+            pattern_mask['C']  &= ~(1UL << i);
+            pattern_mask['T']  &= ~(1UL << i);
+        }
+                                if (pattern[i] == 'V'){
+            pattern_mask['A']  &= ~(1UL << i);
+            pattern_mask['G']  &= ~(1UL << i);
+            pattern_mask['C']  &= ~(1UL << i);
         }
         pattern_mask[pattern[i]] &= ~(1UL << i);
     }
