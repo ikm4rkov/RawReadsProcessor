@@ -487,7 +487,7 @@ int main(int argc, char** argv)
     int c;
     string types0 = "";
     opterr = 0;
-    while ((c = getopt (argc, argv, "hseptu:i:k:j:d:l:m:")) != -1)
+    while ((c = getopt (argc, argv, "hvseptu:i:k:j:d:l:m:")) != -1)
         switch (c) {
         case 'h':
             cout << "Tool fot processing reads in .FASTQ fomat" << endl;
@@ -501,7 +501,13 @@ int main(int argc, char** argv)
             cout << "-d description sequence, must be silenced: * - start of DNA- part, . - start of RNA- part, < - start for cut part, ! - start for checked DNA- part. ? - start for checked RNA- part, ([0-9]+) - max mismatch limit, b - is the start for bridge (-p mode only). Example *<AGTC(1). will find a bridge AGTC and separate DNA- and RNA- parts." << endl;
             cout << "-l optional min length filter for a total DNA- and RNA- parts, default is 0." << endl;
                                                 cout << "-u bridge codes for linker orientation; default 10,01,20,02 10 for paired end mode, 1,2 for single end; example forward linker in R1, 02 reverse complement linker in R2, for single end 1 - forward linker, 2 - reverse complement" << endl;
-            break;
+            cout << "Usage:" << endl;
+                                                cout << "Single-end: ./alpha1 -s -i <path to the .fastq> -d <description sequence> -e -t -l <int; default 0> -m <int; default 0> -u <string; default 1,2>" << endl;
+                                                cout << "Paired-ned: ./alpha1 -p -j <path to the R1 .fastq> -k <path the to R2 .fastq> -d <description sequence> -e -t -l <int; default 0> -m <int; default 0> -u <string; default 1,2>" << endl;
+                                                break;
+                                case 'v':
+                                                cout << "Version 1.2; to get more details on options and example code use -h" << endl;
+                                                break;
         case 's':
             SEu = 1;
             break;
