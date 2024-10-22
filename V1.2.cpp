@@ -593,7 +593,7 @@ int main(int argc, char** argv)
         split(s1, name_split, '.');
         s1 = name_split[0] + ".DNA.fastq";
         s2 = name_split[0] + ".RNA.fastq";
-        s3 = name_split[0] + ".garbage.fastq";
+        s3 = name_split[0] + ".garbage.fastqlike";
         s4 = name_split[0] + ".types.tsv";
                                 s5 = name_split[0] + ".codes.tsv";
                 }
