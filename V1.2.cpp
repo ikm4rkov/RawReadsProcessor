@@ -205,9 +205,6 @@ void parser(int &success,  string describe_seq, string restofline, string restof
     int cnt = 0;
     bool DNAu = false;
     bool RNAu = false;
-    bool Cutu = false;
-    bool CheckDNAu = false;
-    bool CheckRNAu = false;
     bool MMNu = false;
     bool bridgeu = false;
     bool bridgeb = true;
@@ -225,45 +222,17 @@ void parser(int &success,  string describe_seq, string restofline, string restof
         if (describe_seq[i] == '*') {
             DNAu = true;
             RNAu = false;
-            Cutu = false;
-            CheckDNAu = false;
-            CheckRNAu = false;
             MMNu = false;
             bridgeu = false;
         }
         if (describe_seq[i] == '.') {
             DNAu = false;
             RNAu = true;
-            Cutu = false;
             MMNu = false;
             bridgeu = false;
         }
         if (describe_seq[i] == 'b') {
             bridgeu = true;
-            Cutu = false;
-            CheckDNAu = false;
-            CheckRNAu = false;
-            MMNu = false;
-        }
-        if (describe_seq[i] == '<') {
-            Cutu = true;
-            bridgeu = false;
-            CheckDNAu = false;
-            CheckRNAu = false;
-            MMNu = false;
-        }
-        if (describe_seq[i] == '?') {
-            Cutu = false;
-            bridgeu = false;
-            CheckDNAu = true;
-            CheckRNAu = false;
-            MMNu = false;
-        }
-        if (describe_seq[i] == '!') {
-            Cutu = false;
-            bridgeu = false;
-            CheckDNAu = false;
-            CheckRNAu = true;
             MMNu = false;
         }
         if (describe_seq[i] == '(') {
@@ -271,17 +240,8 @@ void parser(int &success,  string describe_seq, string restofline, string restof
         }
         // operators
         // cout << "DSI: " << describe_seq[i] << " MMNu: " << MMNu << endl;
-        if (Cutu && describe_seq[i] != '<' && !MMNu) {
-            Cut += describe_seq[i];
-        }
         if (bridgeu && describe_seq[i] != 'b' && !MMNu) {
             brseq += describe_seq[i];
-        }
-        if (CheckDNAu && describe_seq[i] != '?' && !MMNu) {
-            CheckDNA += describe_seq[i];
-        }
-        if (CheckRNAu && describe_seq[i] != '!' && !MMNu) {
-            CheckRNA += describe_seq[i];
         }
         if (MMNu && describe_seq[i] != '(') {
             MMN += describe_seq[i];
@@ -294,39 +254,6 @@ void parser(int &success,  string describe_seq, string restofline, string restof
             // cout << i << " MMN " << MMN << endl;
             // MMN = MMN.substr(0, MMN.length() - 1);
             // Cut branch
-            if (Cutu) {
-                // cout << i << endl;
-                // cnt += 1;
-                // cout << Cut << " " << MMN << endl;
-                // cout << "<<<<<<<<<<<<<<<<<<<<" << endl;
-                //cout << Cut << " " << restofline << " " << stoi(MMN) << " " << endl;
-                bitap_approximate_search(Cut, restofline, stoi(MMN), match_vector);
-                // if not found break
-                if (match_vector.size() == 0) {
-                    cnt += 1;
-                    // cout << "NF<" << endl;
-                    success = 0;
-                    brstart = -1;
-                    brend = -1;
-                    break;
-                }
-                // filling DNA- and RNA- parts, cutting read sequence, chaning state and clearing match vector
-                if (DNAu) {
-                    // cout << dna_read[1] << " bf ";
-                    dna_read[1] += restofline.substr(0, match_vector[0]);
-                    dna_read[3] += restoflineq.substr(0, match_vector[0]);
-                    // cout << dna_read[1] << " af " << endl;
-                }
-                if (RNAu) {
-                    rna_read[1] += restofline.substr(0, match_vector[0]);
-                    rna_read[3] += restoflineq.substr(0, match_vector[0]);
-                }
-                restofline = restofline.substr(match_vector[0] + Cut.length(), strlen(restofline.c_str())+1);
-                restoflineq = restoflineq.substr(match_vector[0] + Cut.length(), strlen(restoflineq.c_str())+1);
-                // cout << "restofline " << restofline << " i: " << i << endl;
-                match_vector.clear();
-                Cut = "";
-            }
             // bridge cut branch
             if (bridgeu) {
                 // cout << i << endl;
@@ -363,70 +290,9 @@ void parser(int &success,  string describe_seq, string restofline, string restof
                 match_vector.clear();
                 bridgeu = "";
             }
-            // checking DNA
-            if (CheckDNAu) {
-                // cout << CheckDNA << endl;
-                // cout << "?????????????????" << endl;
-                // cout << CheckDNA << " " << restofline << " " << stoi(MMN) << " " << endl;
-                bitap_approximate_search(CheckDNA, restofline, stoi(MMN), match_vector);
-                if (match_vector.size() == 0) {
-                    cnt += 1;
-                    success = 0;
-                    // cout << "Not found ?" << endl;
-                    break;
-                }
-                // cout << restofline.substr(0, match_vector_forward[0]) << endl;
-                if (DNAu) {
-                    dna_read[1] += restofline.substr(0, match_vector[0]);
-                    dna_read[3] += restoflineq.substr(0, match_vector[0]);
-                }
-                if (RNAu) {
-                    rna_read[1] += restofline.substr(0, match_vector[0]);
-                    rna_read[3] += restoflineq.substr(0, match_vector[0]);
-                }
-                dna_read[1] += restofline.substr(match_vector[0], CheckDNA.length());
-                dna_read[3] += restoflineq.substr(match_vector[0], CheckDNA.length());
-                restofline = restofline.substr(match_vector[0] + CheckDNA.length(), strlen(restofline.c_str())+1);
-                restoflineq = restoflineq.substr(match_vector[0] + CheckDNA.length(), strlen(restoflineq.c_str())+1);
-                match_vector.clear();
-                CheckDNA = "";
-            }
-            // checking RNA
-            if (CheckRNAu) {
-                // cout << CheckRNA << endl;
-                // cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-                // cout << CheckRNA << " " << restofline << " " << stoi(MMN) << " " << endl;
-                bitap_approximate_search(CheckRNA, restofline, stoi(MMN), match_vector);
-                if (match_vector.size() == 0) {
-                    cnt += 1;
-                    success = 0;
-                    // cout << "Not found !" << endl;
-                    break;
-                }
-                if (DNAu) {
-                    dna_read[1] += restofline.substr(0, match_vector[0]);
-                    dna_read[3] += restoflineq.substr(0, match_vector[0]);
-                }
-                if (RNAu) {
-                    rna_read[1] += restofline.substr(0, match_vector[0]);
-                    rna_read[3] += restoflineq.substr(0, match_vector[0]);
-                }
-                // cout << "rread_1: " << rna_read[1] << endl;
-                // cout << restofline.substr(match_vector_forward[0], match_vector_forward[0] + CheckRNA.length()) << " " << match_vector_forward[0] << " " << CheckRNA.length() << endl;
-                rna_read[1] += restofline.substr(match_vector[0], CheckRNA.length());
-                rna_read[3] += restoflineq.substr(match_vector[0], CheckRNA.length());
-                // cout << "rread_2: " << rna_read[1] << endl;
-                restofline = restofline.substr(match_vector[0] + CheckRNA.length(), strlen(restofline.c_str())+1);
-                restoflineq = restoflineq.substr(match_vector[0] + CheckRNA.length(), strlen(restoflineq.c_str())+1);
-                match_vector.clear();
-                CheckRNA = "";
-            }
             // changing to a zero state
             DNAu = false;
             RNAu = false;
-            Cutu = false;
-            CheckDNAu = false;
-            CheckRNAu = false;
             MMNu = false;
             bridgeu = false;
             MMN = "";
