@@ -894,8 +894,8 @@ int main(int argc, char** argv)
                                 split_id.clear();
                             }
                             if (TSVu == 1) {
-                                types0 = dna_read[0] +  "\tBT\t" + std::to_string(RNA_Length_Success) + "10" + std::to_string(RNA_Length_Success) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
-                                count_PE_codes["BT" + std::to_string(RNA_Length_Success) + "10" + std::to_string(RNA_Length_Success)] += 1;
+                                types0 = dna_read[0] +  "\tBT\t" + std::to_string(DNA_Length_Success) + "10" + std::to_string(RNA_Length_Success) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                count_PE_codes["BT" + std::to_string(DNA_Length_Success) + "10" + std::to_string(RNA_Length_Success)] += 1;
                                                                                                                                 brstart = 0;
                                 brend = 0;
                                 print1f_types(types, types0, typesbuffer);
@@ -912,8 +912,8 @@ int main(int argc, char** argv)
                                 split_id.clear();
                             }
                             if (TSVu == 1) {
-                                types0 = dna_read[0] +  "\tBT\t" + std::to_string(RNA_Length_Success) + "20" + std::to_string(RNA_Length_Success) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
-                                count_PE_codes["BT" + std::to_string(RNA_Length_Success) + "20" + std::to_string(RNA_Length_Success)] += 1;
+                                types0 = dna_read[0] +  "\tBT\t" + std::to_string(DNA_Length_Success) + "20" + std::to_string(RNA_Length_Success) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                count_PE_codes["BT" + std::to_string(DNA_Length_Success) + "20" + std::to_string(RNA_Length_Success)] += 1;
                                                                                                                                 brstart = 0;
                                 brend = 0;
                                 print1f_types(types, types0, typesbuffer);
@@ -931,8 +931,8 @@ int main(int argc, char** argv)
 
                             }
                             if (TSVu == 1) {
-                                types0 = dna_read[0] +  "\tBT\t" + std::to_string(RNA_Length_Success) + "01" + std::to_string(RNA_Length_Success) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
-                                count_PE_codes["BT" + std::to_string(RNA_Length_Success) + "01" + std::to_string(RNA_Length_Success)] += 1;
+                                types0 = dna_read[0] +  "\tBT\t" + std::to_string(DNA_Length_Success) + "01" + std::to_string(RNA_Length_Success) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                count_PE_codes["BT" + std::to_string(DNA_Length_Success) + "01" + std::to_string(RNA_Length_Success)] += 1;
                                                                                                                                 brstart = 0;
                                 brend = 0;
                                 print1f_types(types, types0, typesbuffer);
@@ -952,8 +952,8 @@ int main(int argc, char** argv)
                                 split_id.clear();
                             }
                             if (TSVu == 1) {
-                                types0 = dna_read[0] +  "\tBT\t" + std::to_string(RNA_Length_Success) + "02" + std::to_string(RNA_Length_Success) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
-                                count_PE_codes["BT" + std::to_string(RNA_Length_Success) + "02" + std::to_string(RNA_Length_Success)] += 1;
+                                types0 = dna_read[0] +  "\tBT\t" + std::to_string(DNA_Length_Success) + "02" + std::to_string(RNA_Length_Success) + "\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                count_PE_codes["BT" + std::to_string(DNA_Length_Success) + "02" + std::to_string(RNA_Length_Success)] += 1;
                                                                                                                                 brstart = 0;
                                 brend = 0;
                                 print1f_types(types, types0, typesbuffer);
