@@ -388,8 +388,9 @@ int main(int argc, char** argv)
         case 't':
             TSVu = 1;
             break;
-                                case 'u':
+        case 'u':
             bridge_codes = optarg;
+            break;
         case 'i':
             inputfilepath = optarg;
             break;
