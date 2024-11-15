@@ -1,3 +1,8 @@
+Install:
+make
+
+Requires g++ c++ 11
+
 Raw reads processor for RNA-DNA interaction sequencing data obtained by "All-to-all" methods. The package allows to find, remove and substitude subsequences in .FASTQ files, the search is approximate for the main programm and exact for ends processor. Supports both single-end and paired-end data. Version changelog and usage can be found below:
 
 Version 1.0 (V1.0.cpp) - only single-end file input, old verison (old read forming method, will skip the last read unless you add '\n@'.
