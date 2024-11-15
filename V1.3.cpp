@@ -388,8 +388,9 @@ int main(int argc, char** argv)
         case 't':
             TSVu = 1;
             break;
-                                case 'u':
+        case 'u':
             bridge_codes = optarg;
+                                                break;
         case 'i':
             inputfilepath = optarg;
             break;
@@ -668,7 +669,7 @@ int main(int argc, char** argv)
                                 split_id.clear();
                                 if (sepu == 1) print1f_simple(file_nb, read_nb, nbbuffer);
                                 if (TSVu == 1) {
-                                    types0 = dna_read[0] +  "\tF-0R\t" +  std::to_string(last_end) + "\t" + std::to_string(last_end) +  "\n";
+                                    types0 = dna_read[0] +  "\tF-0R\t" +  std::to_string(last_start) + "\t" + std::to_string(last_end) +  "\n";
                                     count_SE_codes["F-0R"] += 1;
                                                                                                                                 brstart = 0;
                                     brend = 0;
@@ -708,7 +709,7 @@ int main(int argc, char** argv)
                                     print1f_simple(rnafile, rna_read, rnabuffer);
                                 }
                                 if (TSVu == 1) {
-                                    types0 = dna_read[0] +  "\tR-DR\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                    types0 = dna_read[0] +  "\tR-DR\t" + std::to_string(one_read[1].size() - brend)  + "\t" +  std::to_string(one_read[1].size() - brstart) + "\n";
                                     count_SE_codes["R-DR"] += 1;
                                                                                                                 brstart = 0;
                                 brend = 0;
@@ -725,7 +726,7 @@ int main(int argc, char** argv)
                                 split_id.clear();
                                 if (sepu == 1) print1f_simple(file_nb, read_nb, nbbuffer);
                                 if (TSVu == 1) {
-                                    types0 = dna_read[0] +  "\tR-D0\t" +  std::to_string(brstart) + "\t" + std::to_string(brend) +  "\n";
+                                    types0 = dna_read[0] +  "\tR-D0\t" + std::to_string(one_read[1].size() - brend)  + "\t" +  std::to_string(one_read[1].size() - brstart) +  "\n";
                                     count_SE_codes["R-D0"] += 1;
                                                                                                                                 brstart = 0;
                                     brend = 0;
@@ -745,7 +746,7 @@ int main(int argc, char** argv)
                                 split_id.clear();
                                 if (sepu == 1) print1f_simple(file_nb, read_nb, nbbuffer);
                                 if (TSVu == 1) {
-                                    types0 = dna_read[0] +  "\tR-0R\t" +  std::to_string(brstart) + "\t" + std::to_string(brend) +  "\n";
+                                    types0 = dna_read[0] +  "\tR-0R\t" + std::to_string(one_read[1].size() - brend)  + "\t" +  std::to_string(one_read[1].size() - brstart) +  "\n";
                                     count_SE_codes["R-0R"] += 1;
                                                                                                                                 brstart = 0;
                                     brend = 0;
@@ -765,7 +766,7 @@ int main(int argc, char** argv)
                                 split_id.clear();
                                 if (sepu == 1) print1f_simple(file_nb, read_nb, nbbuffer);
                                 if (TSVu == 1) {
-                                    types0 = dna_read[0] +  "\tR-00\t" +  std::to_string(brstart) + "\t" + std::to_string(brend) +  "\n";
+                                    types0 = dna_read[0] + "\tR-00\t" + std::to_string(one_read[1].size() - brend)  + "\t" + std::to_string(one_read[1].size() - brstart) + "\n";
                                                                                                                                                 count_SE_codes["R-00"] += 1;
                                                                                                                                 brstart = 0;
                                     brend = 0;
@@ -787,8 +788,8 @@ int main(int argc, char** argv)
                         split_id.clear();
                         if (sepu == 1) print1f_simple(file_nb, read_nb, nbbuffer);
                         if (TSVu == 1) {
-                            types0 = dna_read[0] +  "\t0\t" +  std::to_string(brstart) + "\t" + std::to_string(brend) +  "\n";
-                            count_SE_codes["0"] += 1;
+                            types0 = dna_read[0] +  "\tFR\t-1\t-1" +  "\n";
+                            count_SE_codes["FR"] += 1;
                                                                                                                                 brstart = 0;
                                                                                                                 brend = 0;
                             print1f_types(types, types0, typesbuffer);
@@ -991,7 +992,7 @@ int main(int argc, char** argv)
                                 print1f_simple(rnafile, rna_read_clear, rnabuffer);
                             }
                             if (TSVu == 1) {
-                                types0 = dna_read[0] +  "\tR-0-DR\t" + std::to_string(last_start) + "\t" + std::to_string(last_end) + "\n";
+                                types0 = dna_read[0] +  "\tR-0-DR\t" + std::to_string(first_read[1].size() - last_end) + "\t" + std::to_string(first_read[1].size() - last_start) + "\n";
                                 count_PE_codes["R-0-DR"] += 1;
                                                                                                                                 brstart = 0;
                                 brend = 0;
@@ -1024,7 +1025,7 @@ int main(int argc, char** argv)
                                 print1f_simple(rnafile, rna_read_clear, rnabuffer);
                             }
                             if (TSVu == 1) {
-                                types0 = dna_read[0] +  "\t0-R-DR\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                types0 = dna_read[0] +  "\t0-R-DR\t" + std::to_string(first_read[1].size() - brend) + "\t" + std::to_string(first_read[1].size() - brstart) + "\n";
                                 count_PE_codes["0-R-DR"] += 1;
                                                                                                                                 brstart = 0;
                                 brend = 0;
@@ -1073,15 +1074,15 @@ int main(int argc, char** argv)
                             }
                             if (TSVu == 1) {
                                                                                                                                 if (DNA_Length_Success && !RNA_Length_Success){
-                                    types0 = dna_read[0] +  "\tR-0-D0\t" + std::to_string(last_start) + "\t" + std::to_string(last_end) + "\n";
+                                    types0 = dna_read[0] +  "\tR-0-D0\t" + std::to_string(first_read[1].size() - last_end) + "\t" + std::to_string(first_read[1].size() - last_start) + "\n";
                                     count_PE_codes["R-0-D0"] += 1;
                                 }
                                 if (!DNA_Length_Success && RNA_Length_Success){
-                                    types0 = dna_read[0] +  "\tR-0-0R\t" + std::to_string(last_start) + "\t" + std::to_string(last_end) + "\n";
+                                    types0 = dna_read[0] +  "\tR-0-0R\t" + std::to_string(first_read[1].size() - last_end) + "\t" + std::to_string(first_read[1].size() - last_start) + "\n";
                                     count_PE_codes["R-0-0R"] += 1;
                                 }
                                 if (!DNA_Length_Success && !RNA_Length_Success){
-                                    types0 = dna_read[0] +  "\tR-0-00\t" + std::to_string(last_start) + "\t" + std::to_string(last_end) + "\n";
+                                    types0 = dna_read[0] +  "\tR-0-00\t" + std::to_string(first_read[1].size() - last_end) + "\t" + std::to_string(first_read[1].size() - last_start) + "\n";
                                     count_PE_codes["R-0-00"] += 1;
                                 }
                                                                                                                                 brstart = 0;
@@ -1133,15 +1134,15 @@ int main(int argc, char** argv)
                             }
                             if (TSVu == 1) {
                                                                                                                                 if (DNA_Length_Success && !RNA_Length_Success){
-                                    types0 = dna_read[0] +  "\t0-R-D0\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                    types0 = dna_read[0] +  "\t0-R-D0\t" + std::to_string(first_read[1].size() - brend) + "\t" + std::to_string(first_read[1].size() - brstart) + "\n";
                                     count_PE_codes["0-R-D0"] += 1;
                                 }
                                 if (!DNA_Length_Success && RNA_Length_Success){
-                                    types0 = dna_read[0] +  "\t0-R-0R\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                    types0 = dna_read[0] +  "\t0-R-0R\t" + std::to_string(first_read[1].size() - brend) + "\t" + std::to_string(first_read[1].size() - brstart) + "\n";
                                     count_PE_codes["0-R-0R"] += 1;
                                 }
                                 if (!DNA_Length_Success && !RNA_Length_Success){
-                                    types0 = dna_read[0] +  "\t0-R-00\t" + std::to_string(brstart) + "\t" + std::to_string(brend) + "\n";
+                                    types0 = dna_read[0] +  "\t0-R-00\t" + std::to_string(first_read[1].size() - brend) + "\t" + std::to_string(first_read[1].size() - brstart) + "\n";
                                     count_PE_codes["0-R-00"] += 1;
                                 }
                                                                                                                                 brstart = 0;
