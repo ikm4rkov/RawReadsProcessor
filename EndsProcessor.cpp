@@ -324,6 +324,7 @@ int main(int argc, char *argv[]) {
             }*/
                                                 //cout << "before counting iteration" << endl;
                                                 //cout << first_read[0] << endl;
+                                                if (first_read[1].length() >= 3 && second_read[1].length() >= 3) {
                                                 count_dictd2f[first_read[1].substr(0, 2)] += 1;
                                                 count_dictd2r[first_read[1].substr(first_read[1].length() - 2, 2)] += 1;
                                                 count_dictr2f[second_read[1].substr(0, 2)] += 1;
@@ -332,6 +333,7 @@ int main(int argc, char *argv[]) {
             count_dictd3r[first_read[1].substr(first_read[1].length() - 3, 3)] += 1;
             count_dictr3f[second_read[1].substr(0, 3)] += 1;
             count_dictr3r[second_read[1].substr(second_read[1].length() - 3, 3)] += 1;
+                                                }
                                                 //cout << "after counting iteration/before ops" << endl;
                                                 //substitude_rear(first_read, dna_check_rear, dna_sub_rear);
                                                 //cout << "after sub rear" << endl;
