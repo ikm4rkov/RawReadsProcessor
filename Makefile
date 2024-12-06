@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++11
 
 all: BridgeSplitter EndsProcessor
 
-BridgeSplitter: V1.3.1.cpp
+BridgeSplitter: V1.3.2.cpp
 	$(CXX) $(CXXFLAGS) -o BridgeSplitter V1.3.1.cpp $(LDFLAGS)
 
 EndsProcessor: EndsProcessor.cpp
