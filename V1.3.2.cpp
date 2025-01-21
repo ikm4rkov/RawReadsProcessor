@@ -374,7 +374,7 @@ int main(int argc, char** argv)
             cout << "Paired-ned: ./alpha1 -p -j <path to the R1 .fastq> -k <path the to R2 .fastq> -d <description sequence> -e -t -l <int; default 0> -m <int; default 0> -u <string; default 1,2>" << endl;
             break;
         case 'v':
-            cout << "Version 1.3; to get more details on options and example code use -h" << endl;
+            cout << "Version 1.3.2; to get more details on options and example code use -h" << endl;
             break;
         case 's':
             SEu = 1;
@@ -1044,15 +1044,15 @@ int main(int argc, char** argv)
                             }
                             if (TSVu == 1) {
                                 if (DNA_Length_Success && !RNA_Length_Success) {
-                                    types0 = dna_read[0] +  "\tF-0-D0"  + std::to_string(last_start + 1) + "\t" + std::to_string(last_end) + "\t" + std::to_string(dna_read_clear[1].length()) + "\t" + std::to_string(rna_read_clear[1].length()) + "\n";
+                                    types0 = dna_read[0] +  "\tF-0-D0\t"  + std::to_string(last_start + 1) + "\t" + std::to_string(last_end) + "\t" + std::to_string(dna_read_clear[1].length()) + "\t" + std::to_string(rna_read_clear[1].length()) + "\n";
                                     count_PE_codes["F-0-D0"] += 1;
                                 }
                                 if (!DNA_Length_Success && RNA_Length_Success) {
-                                    types0 = dna_read[0] +  "\tF-0-0R" + std::to_string(last_start + 1) + "\t" + std::to_string(last_end) + "\t" + std::to_string(dna_read_clear[1].length()) + "\t" + std::to_string(rna_read_clear[1].length()) + "\n";
+                                    types0 = dna_read[0] +  "\tF-0-0R\t" + std::to_string(last_start + 1) + "\t" + std::to_string(last_end) + "\t" + std::to_string(dna_read_clear[1].length()) + "\t" + std::to_string(rna_read_clear[1].length()) + "\n";
                                     count_PE_codes["F-0-0R"] += 1;
                                 }
                                 if (!DNA_Length_Success && !RNA_Length_Success) {
-                                    types0 = dna_read[0] +  "\tF-0-00"  + std::to_string(last_start + 1) + "\t" + std::to_string(last_end) + "\t" + std::to_string(dna_read_clear[1].length()) + "\t" + std::to_string(rna_read_clear[1].length()) + "\n";
+                                    types0 = dna_read[0] +  "\tF-0-00\t"  + std::to_string(last_start + 1) + "\t" + std::to_string(last_end) + "\t" + std::to_string(dna_read_clear[1].length()) + "\t" + std::to_string(rna_read_clear[1].length()) + "\n";
                                     count_PE_codes["F-0-00"] += 1;
                                 }
                                 brstart = 0;
