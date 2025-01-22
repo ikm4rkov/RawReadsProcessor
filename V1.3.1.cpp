@@ -701,7 +701,7 @@ int main(int argc, char** argv)
                         }
                         else {
                             if (DNA_Length_Success && RNA_Length_Success) {
-                                int is_in = condi_codes.count("1");
+                                int is_in = condi_codes.count("2");
                                 if (sepu == 1 && is_in > 0) {
                                     print1f_simple(dnafile, dna_read, dnabuffer);
                                     print1f_simple(rnafile, rna_read, rnabuffer);
