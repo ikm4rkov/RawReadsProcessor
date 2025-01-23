@@ -16,6 +16,8 @@
 
 using namespace std;
 
+
+
 // Global vectors to store read data (single-end and paired-end)
 // Each vector contains 4 strings (identifier, sequence, plus, quality)
 // Used to store different types of reads
@@ -348,6 +350,13 @@ void processRead(std::vector<std::string>& one_read,
     }
 }
 
+std::string get_filename_without_extension(const std::string &filepath) {
+    size_t pos = filepath.find_last_of("/\\");
+    std::string filename = (pos == std::string::npos) ? filepath : filepath.substr(pos + 1);
+    size_t ext_pos = filename.find_last_of(".");
+    return (ext_pos == std::string::npos) ? filename : filename.substr(0, ext_pos);
+}
+
 
 // Main function
 int main(int argc, char** argv)
@@ -364,7 +373,7 @@ int main(int argc, char** argv)
     string inputfilepath2 = "";
     string describe_seq = "";
     string bridge_codes = "10,01,20,02";
-    string output_dir = "";  // Variable to store the output directory path
+    string output_dir = ".";  // Variable to store the output directory path
     int index;
     int c;
     string types0 = "";
@@ -478,26 +487,25 @@ int main(int argc, char** argv)
 
     // Variables for output file paths
     string s1 = "", s2 = "", s3 = "", s4 = "", s5 = "";
+		// Handling output file paths based on SE (Single End) or PE (Paired End) mode
+    if (SEu == 1) {  // Single End mode
+        std::string filename = get_filename_without_extension(inputfilepath);  // Получаем имя файла без расширения
+        s1 = output_dir + "/" + filename + ".DNA.fastq";
+        s2 = output_dir + "/" + filename + ".RNA.fastq";
+        s3 = output_dir + "/" + filename + ".garbage.fastq";
+        s4 = output_dir + "/" + filename + ".types.tsv";
+        s5 = output_dir + "/" + filename + ".codes.tsv";
+    }
+    if (PEu == 1) {  // Paired End mode
+        std::string filename1 = get_filename_without_extension(inputfilepath1);  // Получаем имя для первого файла
+        std::string filename2 = get_filename_without_extension(inputfilepath2);  // Получаем имя для второго файла
+        s1 = output_dir + "/" + filename1 + ".DNA.fastq";
+        s2 = output_dir + "/" + filename2 + ".RNA.fastq";
+        s3 = output_dir + "/" + filename1 + ".garbage.fastqlike";  // Например, для второго файла
+        s4 = output_dir + "/" + filename1 + ".types.tsv";
+        s5 = output_dir + "/" + filename1 + ".codes.tsv";
+		}
 
-    // Handling output file paths based on SE (Single End) or PE (Paired End) mode
-    if (SEu == 1) { // Single End mode
-        s1 = output_dir + "/" + inputfilepath;
-        split(s1, name_split, '.');
-        s1 = name_split[0] + ".DNA.fastq";
-        s2 = name_split[0] + ".RNA.fastq";
-        s3 = name_split[0] + ".garbage.fastq";
-        s4 = name_split[0] + ".types.tsv";
-        s5 = name_split[0] + ".codes.tsv";
-    }
-    if (PEu == 1) { // Paired End mode
-        s1 = output_dir + "/" + inputfilepath1;
-        split(s1, name_split, '.');
-        s1 = name_split[0] + ".DNA.fastq";
-        s2 = name_split[0] + ".RNA.fastq";
-        s3 = name_split[0] + ".garbage.fastqlike";
-        s4 = name_split[0] + ".types.tsv";
-        s5 = name_split[0] + ".codes.tsv";
-    }
 
     // Process linker orientation nomenclature (F/R -> 1/2 or 10/20)
     unordered_set<string> condi_codes;
@@ -549,8 +557,8 @@ int main(int argc, char** argv)
     fstream infile1;
     fstream infile2;
     infile.open(inputfilepath, std::ifstream::in);
-    infile1.open(inputfilepath1, std::ios::in);
-    infile2.open(inputfilepath2, std::ios::in);
+    infile1.open(inputfilepath1, std::ifstream::in);
+    infile2.open(inputfilepath2, std::ifstream::in);
 
     // Open output files for writing (using low-level file opening)
     const int dnafile = open(s1.c_str(), O_CREAT | O_WRONLY, 0644);
@@ -560,6 +568,7 @@ int main(int argc, char** argv)
     const int codes = open(s5.c_str(), O_CREAT | O_WRONLY, 0644);
 
     // Check write permissions for output files
+		// cout << s1 << " " << s2 << " " << s3 << " " << s4 << " " << s5 << endl;
     if (access(s1.c_str(), W_OK) != 0 || access(s2.c_str(), W_OK) != 0 || access(s3.c_str(), W_OK) != 0 || access(s4.c_str(), W_OK) != 0 || access(s5.c_str(), W_OK) != 0) {
         cerr << "Cannot write to output file" << endl;
         exit(1);
@@ -587,9 +596,11 @@ int main(int argc, char** argv)
                     string restoflineq = one_read[3];
                     string restofline_rc = "";
                     string restoflineq_rc = "";
-
-                    // Reverse complement the read sequence and its quality scores (for reverse orientation)
-                    rcomplement(restofline, restofline_rc);
+										// Reverse the sequence and the quality strings for reverse orientation
+										rcomplement(restofline, restofline_rc);
+										for (i = restofline_rc.length() - 1; i >= 0; i--) {
+										    restoflineq_rc += restoflineq[i];
+										}
 
                     // Flags to track the validity of different conditions
                     bool DNAu = false;
@@ -653,11 +664,7 @@ int main(int argc, char** argv)
                         last_end = brend;
                     }
 
-                    // Reverse the read sequence and its quality string for reverse orientation
-                    restoflineq_rc = "";
-                    for (i = restofline.length() - 1; i >= 0; i--) {
-                        restoflineq_rc += restoflineq[i];
-                    }
+										//if (dna_read[0] == "@SRR10010328.15282064") cout << successr << " " << describe_seq << " " << restofline_rc << " " << restoflineq_rc << " " << match_vector_reverse.size() <<  endl;
 
                     // Try parsing the reverse orientation of the read (- strand)
                     parser(successr, describe_seq, restofline_rc, restoflineq_rc, match_vector_reverse);
@@ -667,6 +674,7 @@ int main(int argc, char** argv)
                         RNA_Length_Success = rna_read[1].length() >= min_length_rna;
                         DNA_Length_Success = dna_read[1].length() >= min_length_dna;
                     }
+										//if (dna_read[0] == "@SRR10010328.15282064") cout << successf << " " << successr << endl;
 
 // Check if the read matches exactly once, either in forward (successf == 1) or reverse (successr == 1) orientation
                     if (successf + successr == 1) {
@@ -795,7 +803,7 @@ int main(int argc, char** argv)
                         else {
                             // Only process the read if both DNA and RNA lengths are valid
                             if (DNA_Length_Success && RNA_Length_Success) {
-                                int is_in = condi_codes.count("1");
+                                int is_in = condi_codes.count("2");
                                 // Debug output for checking the reverse read
                                 // cout << "Processing reverse: " << one_read[0] << " Length: " << dna_read[1].length() << ", " << rna_read[1].length() << endl;
 
@@ -903,26 +911,23 @@ int main(int argc, char** argv)
                             }
                         }
                     }
-
-
-// Main block for processing linker occurrences
-                    if (successf + successr > 0) {
-                        // Handle cases where more than one linker is found
-                        if (successf + successr > 1) {
+										else {  
+												// Handle cases where more than one linker is found
+												if (successf + successr > 1) {
                             // General case for multiple linkers found (FR)
                             processRead(one_read, split_id, "FR", dna_read[0] + "\tFR\t-1\t-1\t-1\t-1", sepu, TSVu, brstart, brend, count_SE_codes, read_nb, types, typesbuffer, file_nb);
                         }
 
                         // Handle cases where no linker is found
-                        else if (successf + successr == 0) {
+                        if (successf + successr == 0) {
                             // General case for no linkers found (0)
                             processRead(one_read, split_id, "0", dna_read[0] + "\t0\t-1\t-1\t-1\t-1", sepu, TSVu, brstart, brend, count_SE_codes, read_nb, types, typesbuffer, file_nb);
                         }
 
-                        // Reset read data after processing
-                        one_read = { "", "", "", "" };  // Clear the read data
-                        line_cnt_mod = -1;  // Reset the line counter
                     }
+										// Reset read data after processing
+                    one_read = { "", "", "", "" };  // Clear the read data
+										line_cnt_mod = -1;
                 }
                 line_cnt_mod += 1;  // Increment line counter
             }
@@ -939,7 +944,7 @@ int main(int argc, char** argv)
         string line1, line2;  // Strings to hold the lines from both files
         while (getline(infile1, line1) && getline(infile2, line2)) {  // Process each line from both files
             // Store the current lines from both files as paired reads
-            first_read[line_cnt_mod] = line1;
+						first_read[line_cnt_mod] = line1;
             second_read[line_cnt_mod] = line2;
 
             if (line_cnt_mod == 3) {  // Process the 3rd line (after reading 3 lines)
@@ -1348,13 +1353,14 @@ int main(int argc, char** argv)
                         types0 = "";  // Clear the types0 string
                     }
 
-                    // Reset read variables for the next iteration
-                    first_read = { "", "", "", "" };
-                    second_read = { "", "", "", "" };
-                    line_cnt_mod = -1;  // Reset line count modifier
                 }
-                line_cnt_mod += 1;  // Increment line count modifier for the next iteration
+								// Reset read variables for the next iteration
+                first_read = { "", "", "", "" };
+                second_read = { "", "", "", "" };
+                line_cnt_mod = -1;  // Reset line count modifier
+
             }
+						line_cnt_mod += 1;  // Increment line count modifier for the next iteration
         }
 // Clear the match vectors to release memory and reset their content
         match_vector_forward1.clear();  // Clear forward match vector for the first read
